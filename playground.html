@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coffee&Engineer</title>
+
+  <!-- Orbitron Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #f8f8f8;
+    }
+
+    header {
+      background: #212121;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #aaa;
+    }
+
+    section {
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      border-left: 6px solid #ff9800;
+      padding-left: 10px;
+      color: #333;
+    }
+
+    .posts-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .post-card {
+      flex: 0 0 auto;
+      width: 280px;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: scale(1.03);
+    }
+
+    .post-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    .post-card p {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #ff9800;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Coffee&Engineer</h1>
+    <p>Brewing Knowledge, One Concept at a Time.</p>
+  </header>
+
+  <section>
+    <div class="section-title">Recent Posts</div>
+    <div class="posts-scroll" id="recentPosts">
+      <!-- Posts will be injected here -->
+    </div>
+  </section>
+
+  <!-- Firebase + Fetch Posts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase, ref, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyApP7iFv26_3ues5cuIWqATznLXVYv7XH8",
+      authDomain: "coffeeandengineer.firebaseapp.com",
+      databaseURL: "https://coffeeandengineer-default-rtdb.firebaseio.com",
+      projectId: "coffeeandengineer",
+      storageBucket: "coffeeandengineer.appspot.com",
+      messagingSenderId: "579022495396",
+      appId: "1:579022495396:web:7576d97b304f2bc62d9031",
+      measurementId: "G-D52M6W0Z6N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const recentPostsContainer = document.getElementById("recentPosts");
+    const postsRef = query(ref(db, "posts"), limitToLast(5));
+
+    onValue(postsRef, (snapshot) => {
+      recentPostsContainer.innerHTML = "";
+      const posts = [];
+
+      snapshot.forEach(childSnapshot => {
+        posts.push({ id: childSnapshot.key, ...childSnapshot.val() });
+      });
+
+      // Sort by timestamp DESC
+      posts.reverse().forEach(post => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+        card.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.description}</p>
+          <span class="badge">${post.subject}</span>
+        `;
+        recentPostsContainer.appendChild(card);
+      });
+    });
+  </script>
+
+</body>
+</html>

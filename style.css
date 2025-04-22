@@ -1,0 +1,142 @@
+body {
+    background-color: black;
+    font-family: 'Orbitron', sans-serif;
+	text-align:center;
+	}
+	
+span {
+	color:gray;
+	font-size:25px;
+	font-family:'Orbitron';
+	cursor: pointer;
+	}
+	
+#typed-text {
+	color:#909090;
+}
+
+.hero-block {
+	background-image: url('https://wallpapercave.com/wp/wp5050274.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #333;
+  border-radius:100px;
+  height: 20px;
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  text-align: center;
+}
+
+/* Rainbow effect */
+.rainbow-text {
+  background: linear-gradient(70deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 1400% 1400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowFlow 10s linear infinite;
+}
+
+@keyframes rainbowFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.section-title {
+	color:red;
+	text-align:left;
+	font-family: 'Barrio';
+}
+
+section {
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      border-left: 6px solid #909090;
+      padding-left: 10px;
+      color: #909090;
+    }
+	
+.posts-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 2rem;
+      padding-bottom: 0.5rem;
+	  color:#909090;
+	  padding-top:0.5rem;
+	  padding-left:0.5rem;
+	  padding-right:0.5rem;
+    }
+
+    .post-card {
+      flex: 0 0 auto;
+      width: 280px;
+      background: black;
+	  border: 1px solid #999999;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: scale(1.03);
+    }
+
+    .post-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+	  font-family: 'Barrio';
+	  color:white;
+    }
+
+    .post-card p {
+      font-size: 1rem;
+	  font-family: 'Gowun Dodum';
+      color: #999999;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #999999;
+	  font-family: 'Barrio';
+      color: black;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+	
+/* Dark-themed Scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Dark track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #909090; /* Orange highlight */
+  border-radius: 10px;
+  border: 2px solid #1e1e1e; /* Padding illusion */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #757575;
+}

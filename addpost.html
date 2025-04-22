@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Post - Coffee&Engineer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1.2rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e68900;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Add New Blog Post</h1>
+
+  <form id="postForm">
+    <label for="title">Post Title</label>
+    <input type="text" id="title" required />
+
+    <label for="description">Short Description</label>
+    <input type="text" id="description" required />
+
+    <label for="subject">Subject</label>
+    <select id="subject" required>
+      <option value="">-- Select Subject --</option>
+      <option value="Physics">Physics</option>
+      <option value="Chemistry">Chemistry</option>
+      <option value="Maths">Maths</option>
+    </select>
+
+    <label for="content">Post Content (HTML/Text)</label>
+    <textarea id="content" rows="10" placeholder="Write the full post here..." required></textarea>
+
+    <button type="submit">Add Post</button>
+  </form>
+
+  <!-- Firebase Setup + Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyApP7iFv26_3ues5cuIWqATznLXVYv7XH8",
+      authDomain: "coffeeandengineer.firebaseapp.com",
+      databaseURL: "https://coffeeandengineer-default-rtdb.firebaseio.com",
+      projectId: "coffeeandengineer",
+      storageBucket: "coffeeandengineer.appspot.com",
+      messagingSenderId: "579022495396",
+      appId: "1:579022495396:web:7576d97b304f2bc62d9031",
+      measurementId: "G-D52M6W0Z6N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const postForm = document.getElementById("postForm");
+
+    postForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const subject = document.getElementById("subject").value;
+      const content = document.getElementById("content").value.trim();
+
+      if (!title || !description || !subject || !content) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const postRef = push(ref(db, "posts"));
+      await set(postRef, {
+        title,
+        description,
+        subject,
+        content,
+        timestamp: Date.now()
+      });
+
+      alert("Post added successfully!");
+      postForm.reset();
+    });
+  </script>
+
+</body>
+</html>

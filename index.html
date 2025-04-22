@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>COFFEE&amp;ENGINEER</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barrio&family=Gowun+Dodum&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+	
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <div class="hero-block">
+      <span id="typed-text" ></span>
+    </div>
+  <section>
+    <div class="section-title">RECENT POSTS</div>
+    <div class="posts-scroll" id="recentPosts">
+      <!-- Posts will be injected here -->
+    </div>
+  </section>
+	
+    <script src="script.js"></script>
+    
+		
+	<script>
+	  document.getElementById("typed-text").onclick = function () {
+        this.classList.toggle("rainbow-text");
+      };
+	</script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getDatabase, ref, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyApP7iFv26_3ues5cuIWqATznLXVYv7XH8",
+      authDomain: "coffeeandengineer.firebaseapp.com",
+      databaseURL: "https://coffeeandengineer-default-rtdb.firebaseio.com",
+      projectId: "coffeeandengineer",
+      storageBucket: "coffeeandengineer.appspot.com",
+      messagingSenderId: "579022495396",
+      appId: "1:579022495396:web:7576d97b304f2bc62d9031",
+      measurementId: "G-D52M6W0Z6N"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const recentPostsContainer = document.getElementById("recentPosts");
+    const postsRef = query(ref(db, "posts"), limitToLast(5));
+
+    onValue(postsRef, (snapshot) => {
+      recentPostsContainer.innerHTML = "";
+      const posts = [];
+
+      snapshot.forEach(childSnapshot => {
+        posts.push({ id: childSnapshot.key, ...childSnapshot.val() });
+      });
+
+      // Sort by timestamp DESC
+      posts.reverse().forEach(post => {
+        const card = document.createElement("div");
+        card.className = "post-card";
+        card.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.description}</p>
+          <span class="badge">${post.subject}</span>
+        `;
+        recentPostsContainer.appendChild(card);
+      });
+    });
+  </script>
+  </body>
+</html>
